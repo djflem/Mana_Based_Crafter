@@ -6,48 +6,43 @@ public class ThinkTank {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-
-        while (true) {
-            mainMenu();
-            scanner.close();
-        }
+        mainMenu();
     }
 
     private static void mainMenu() {
-        System.out.println("Main menu... Input a number.");
-        System.out.println("1. Create new deck");
-        System.out.println("2. Load existing deck");
+        boolean keepRunning = true;
+        while (keepRunning) {
+            System.out.println("\nMain menu... Input a number.");
+            System.out.println("1. Create new deck");
+            System.out.println("2. Load existing deck");
+            System.out.println("3. Exit");
 
-        try {
-            int menu = scanner.nextInt();
+            String input = scanner.nextLine();
+            int menu = 0;
+            try {
+                menu = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number.");
+                continue;
+            }
+
             switch (menu) {
-                case 1: //create new deck
+                case 1:
                     createDeck();
                     break;
-                case 2: //load existing deck
+                case 2:
                     displayDecks();
-                    //loadDeck();
+                    loadDeck();
                     break;
-                case 3: //future option
+                case 3:
+                    System.out.println("Closing program...");
+                    keepRunning = false;
                     break;
+                default:
+                    System.out.println("Invalid input... Please try again.");
             }
-
-            System.out.println("Invalid input... Input a number.");
-            System.out.println("1. Main menu");
-            System.out.println("2. Exit");
-
-            int continueOption = scanner.nextInt();
-            if (continueOption == 1) {
-                mainMenu();
-            } else {
-                System.out.println("Closing program...");
-            }
-        } catch(Exception e) {
-            e.printStackTrace();
         }
     }
-
-
 
     private static void createDeck() {
         //System.out.println("...");
@@ -71,30 +66,25 @@ public class ThinkTank {
 
     }
 
-    public static void displayDecks(){
-        BufferedReader reader = null;
+    public static void displayDecks() {
         int deckCounter = 0;
 
-        try{
-            reader = new BufferedReader(new FileReader(FILE_PATH));
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+            System.out.println("Choose existing deck... Input a number.");
             String currentLine;
-            System.out.println("List of existing decks... Input a number.");
 
-            while((currentLine = reader.readLine()) != null){
-                System.out.println((deckCounter += 1) + ". " + currentLine);
+            while ((currentLine = reader.readLine()) != null) {
+                System.out.println(++deckCounter + ". " + currentLine);
             }
-        }
-        catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        finally{
-            try{
-                if(reader != null) reader.close();
-            }
-            catch (IOException ex){
-                ex.printStackTrace();
-            }
-        }
+    }
+
+    public static void loadDeck(){
+
+
+
     }
 
     private static void writeUserData(String name, String colors, int lands) {
@@ -102,6 +92,7 @@ public class ThinkTank {
             BufferedWriter writer = new BufferedWriter(fw);
             PrintWriter out = new PrintWriter(writer)) {
             out.println("Name: " + name + ", Colors: " + colors + ", Land Count: " + lands);
+
         } catch (IOException e) {
             System.out.println("An error occurred while writing to the file.");
             e.printStackTrace();
