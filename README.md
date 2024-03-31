@@ -1,0 +1,1 @@
+A tool to help create manabases for MtG decks, EDH specifically. The user is prompted to input numbers to navigate the program. You can create a deck or load an existed deck. Decks contain names, colors, and land counts. Once you have created or loaded a deck, the user may then
